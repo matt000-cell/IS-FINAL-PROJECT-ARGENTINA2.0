@@ -1,0 +1,538 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Guess That Argentine Food! 🇦🇷</title>
+  <style>
+    * { box-sizing: border-box; margin: 0; padding: 0; }
+
+    body {
+      font-family: 'Segoe UI', Arial, sans-serif;
+      background: linear-gradient(135deg, #74ACDF 0%, #FFFFFF 50%, #74ACDF 100%);
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 30px 15px;
+      color: #1a1a1a;
+    }
+
+    h1 {
+      font-size: 2.4rem;
+      color: #003087;
+      text-align: center;
+      margin-bottom: 6px;
+      text-shadow: 1px 1px 0 rgba(255,255,255,0.8);
+    }
+
+    .subtitle {
+      color: #444;
+      text-align: center;
+      margin-bottom: 28px;
+      font-size: 1rem;
+    }
+
+    #game-card {
+      background: #fff;
+      border-radius: 16px;
+      box-shadow: 0 6px 32px rgba(0,48,135,0.15);
+      padding: 36px 40px;
+      max-width: 620px;
+      width: 100%;
+    }
+
+    #score-bar {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: 22px;
+      font-size: 0.88rem;
+      color: #555;
+      font-weight: 500;
+    }
+
+    #score-display {
+      background: #003087;
+      color: #F6C100;
+      font-weight: 700;
+      font-size: 1rem;
+      padding: 4px 14px;
+      border-radius: 20px;
+    }
+
+    #progress-bar-bg {
+      width: 100%;
+      height: 6px;
+      background: #e0e7f0;
+      border-radius: 4px;
+      margin-bottom: 26px;
+    }
+
+    #progress-bar-fill {
+      height: 100%;
+      background: linear-gradient(to right, #003087, #74ACDF);
+      border-radius: 4px;
+      transition: width 0.4s ease;
+      width: 0%;
+    }
+
+    #question-num {
+      font-size: 0.78rem;
+      font-weight: 600;
+      letter-spacing: 0.1em;
+      text-transform: uppercase;
+      color: #74ACDF;
+      margin-bottom: 10px;
+    }
+
+    #food-emoji {
+      font-size: 5rem;
+      text-align: center;
+      margin: 10px 0 16px;
+      line-height: 1;
+    }
+
+    #question-text {
+      font-size: 1.25rem;
+      font-weight: 600;
+      color: #003087;
+      text-align: center;
+      margin-bottom: 8px;
+      line-height: 1.4;
+    }
+
+    #hint-text {
+      font-size: 0.9rem;
+      color: #666;
+      text-align: center;
+      font-style: italic;
+      margin-bottom: 26px;
+      min-height: 1.4em;
+    }
+
+    #choices {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 12px;
+      margin-bottom: 20px;
+    }
+
+    .choice-btn {
+      background: #f4f7fb;
+      border: 2px solid #d0daea;
+      border-radius: 10px;
+      padding: 14px 10px;
+      font-size: 1rem;
+      font-weight: 500;
+      color: #1a1a1a;
+      cursor: pointer;
+      transition: background 0.15s, border-color 0.15s, transform 0.1s;
+      text-align: center;
+      line-height: 1.3;
+    }
+
+    .choice-btn:hover:not(:disabled) {
+      background: #e8eef8;
+      border-color: #74ACDF;
+      transform: translateY(-2px);
+    }
+
+    .choice-btn:disabled { cursor: default; }
+
+    .choice-btn.correct {
+      background: #d4f5df;
+      border-color: #2d8a4e;
+      color: #1a5c2e;
+    }
+
+    .choice-btn.wrong {
+      background: #fde8e8;
+      border-color: #c0392b;
+      color: #7b1f1f;
+    }
+
+    #feedback {
+      text-align: center;
+      font-size: 1rem;
+      font-weight: 600;
+      min-height: 1.5em;
+      margin-bottom: 18px;
+      color: #003087;
+    }
+
+    #feedback.correct-msg { color: #2d8a4e; }
+    #feedback.wrong-msg { color: #c0392b; }
+
+    #fact-box {
+      background: #f0f5ff;
+      border-left: 4px solid #74ACDF;
+      padding: 12px 16px;
+      border-radius: 0 8px 8px 0;
+      font-size: 0.9rem;
+      color: #333;
+      margin-bottom: 20px;
+      display: none;
+      line-height: 1.6;
+    }
+
+    #next-btn {
+      display: block;
+      width: 100%;
+      background: #003087;
+      color: #F6C100;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 14px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.2s, transform 0.1s;
+      display: none;
+    }
+
+    #next-btn:hover {
+      background: #00204d;
+      transform: translateY(-1px);
+    }
+
+    /* RESULTS SCREEN */
+    #results-screen {
+      display: none;
+      text-align: center;
+    }
+
+    #results-screen h2 {
+      font-size: 2rem;
+      color: #003087;
+      margin-bottom: 10px;
+    }
+
+    #result-emoji {
+      font-size: 4rem;
+      margin: 14px 0;
+    }
+
+    #result-score {
+      font-size: 3.5rem;
+      font-weight: 700;
+      color: #003087;
+      margin-bottom: 6px;
+    }
+
+    #result-message {
+      font-size: 1.1rem;
+      color: #444;
+      margin-bottom: 28px;
+      line-height: 1.6;
+    }
+
+    #play-again-btn {
+      background: #003087;
+      color: #F6C100;
+      font-size: 1.1rem;
+      font-weight: 700;
+      padding: 14px 36px;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      margin-bottom: 14px;
+      transition: background 0.2s;
+      display: block;
+      width: 100%;
+    }
+
+    #play-again-btn:hover { background: #00204d; }
+
+    .back-link {
+      display: block;
+      text-align: center;
+      margin-top: 22px;
+      color: #003087;
+      font-size: 0.9rem;
+      text-decoration: none;
+    }
+    .back-link:hover { text-decoration: underline; }
+
+    #question-screen { display: block; }
+  </style>
+</head>
+<body>
+
+  <h1>🇦🇷 Guess That Argentine Food!</h1>
+  <p class="subtitle">How well do you know Argentine cuisine? Let's find out.</p>
+
+  <div id="game-card">
+
+    <!-- QUESTION SCREEN -->
+    <div id="question-screen">
+      <div id="score-bar">
+        <span id="q-counter">Question 1 of 10</span>
+        <span id="score-display">Score: 0</span>
+      </div>
+      <div id="progress-bar-bg">
+        <div id="progress-bar-fill"></div>
+      </div>
+      <div id="question-num">Question 1</div>
+      <div id="food-emoji">🍽️</div>
+      <div id="question-text">Loading...</div>
+      <div id="hint-text"></div>
+      <div id="choices"></div>
+      <div id="feedback"></div>
+      <div id="fact-box"></div>
+      <button id="next-btn" onclick="nextQuestion()">Next Question →</button>
+    </div>
+
+    <!-- RESULTS SCREEN -->
+    <div id="results-screen">
+      <h2>Game Over!</h2>
+      <div id="result-emoji"></div>
+      <div id="result-score"></div>
+      <div id="result-message"></div>
+      <button id="play-again-btn" onclick="restartGame()">🔄 Play Again</button>
+    </div>
+
+  </div>
+
+  <a href="argentina.html" class="back-link">← Back to Argentina page</a>
+
+  <script>
+    const allQuestions = [
+      {
+        emoji: "🍪",
+        question: "Two soft cookies sandwiched with dulce de leche and dipped in chocolate — what are these called?",
+        hint: "A very popular snack found in every kiosk in Argentina",
+        choices: ["Facturas", "Alfajores", "Medialunas", "Churros"],
+        answer: "Alfajores",
+        fact: "Alfajores are arguably Argentina's most iconic sweet. The Havanna brand from Mar del Plata is the most famous. Argentines eat millions of them every year!"
+      },
+      {
+        emoji: "🔥",
+        question: "What is the name of Argentina's famous BBQ tradition, involving slow-cooked meat over open coals?",
+        hint: "It's more of a social event than just a meal",
+        choices: ["Parrillada", "Asado", "Locro", "Choripán"],
+        answer: "Asado",
+        fact: "Asado is considered the national dish of Argentina. The 'asador' (grill master) is a position of great respect. It can last for hours with family and friends."
+      },
+      {
+        emoji: "🥟",
+        question: "These stuffed pastries can be baked or fried and are filled with beef, chicken, or ham and cheese. What are they?",
+        hint: "Every region in Argentina makes them slightly differently",
+        choices: ["Empanadas", "Tamales", "Pierogi", "Pastelillos"],
+        answer: "Empanadas",
+        fact: "Argentine empanadas vary a lot by region. Salta-style are usually fried and spicy, while Buenos Aires ones are baked. The crimping pattern on the edge tells you what filling is inside!"
+      },
+      {
+        emoji: "🧉",
+        question: "What is the name of Argentina's national caffeinated herbal drink, sipped through a metal straw from a gourd?",
+        hint: "Argentines carry a thermos of this literally everywhere",
+        choices: ["Yerba", "Tereré", "Mate", "Fernet"],
+        answer: "Mate",
+        fact: "Mate is so central to Argentine culture that it's considered rude to not share your mate in a social setting. Saying 'gracias' (thank you) when receiving it means you don't want any more!"
+      },
+      {
+        emoji: "🥐",
+        question: "What are Argentina's small, sweet, buttery croissants called — served at every café with coffee?",
+        hint: "Similar to a French croissant but sweeter and smaller",
+        choices: ["Churros", "Medialunas", "Facturas", "Bizcochitos"],
+        answer: "Medialunas",
+        fact: "Medialuna literally means 'half moon' in Spanish, which describes their crescent shape. They're coated in a sweet glaze and are best eaten fresh from the bakery in the morning."
+      },
+      {
+        emoji: "🌭",
+        question: "What is a 'choripán' in Argentina?",
+        hint: "You'll find this at football games and street markets",
+        choices: [
+          "A chorizo sausage sandwich on crusty bread",
+          "A fried dough with cheese filling",
+          "A sweet pork tamale",
+          "A grilled chicken wrap"
+        ],
+        answer: "A chorizo sausage sandwich on crusty bread",
+        fact: "Choripán is Argentina's beloved street food. 'Chori' = chorizo, 'pan' = bread. It's topped with chimichurri sauce and is a staple at football matches and asados."
+      },
+      {
+        emoji: "🍮",
+        question: "What is 'dulce de leche' — the ingredient that appears in almost every Argentine dessert?",
+        hint: "Made by slowly heating sweetened milk",
+        choices: [
+          "A type of chocolate ganache",
+          "A sweet caramel-like spread made from milk and sugar",
+          "A vanilla custard cream",
+          "A coconut and condensed milk jam"
+        ],
+        answer: "A sweet caramel-like spread made from milk and sugar",
+        fact: "Dulce de leche is to Argentina what peanut butter is to the USA. It's spread on toast, used in alfajores, swirled into ice cream, and eaten directly off the spoon."
+      },
+      {
+        emoji: "🍕",
+        question: "Argentina has its own unique pizza style. What makes 'fugazza' different from regular pizza?",
+        hint: "A Buenos Aires specialty with no tomato sauce",
+        choices: [
+          "It has no cheese and is loaded with caramelized onions",
+          "It uses a corn flour base instead of wheat",
+          "It is deep dish with a thick tomato layer",
+          "It is topped with beef and chimichurri"
+        ],
+        answer: "It has no cheese and is loaded with caramelized onions",
+        fact: "Buenos Aires has a massive Italian immigrant influence, which is why pizza is huge there. Fugazza is a classic — just dough, olive oil, and sweet onions. Fugazzeta adds a thick layer of mozzarella on top."
+      },
+      {
+        emoji: "🍦",
+        question: "Argentina is famous for what style of ice cream, known for dense, creamy texture and unique flavors?",
+        hint: "Influenced by Italian immigrants — the word starts with 'H'",
+        choices: ["Nieve", "Helado artesanal", "Sorbete", "Gelati"],
+        answer: "Helado artesanal",
+        fact: "Argentine ice cream (helado) is heavily influenced by Italian gelato traditions. Dulce de leche is the #1 flavor. Cities like Buenos Aires have incredible heladería shops on every block."
+      },
+      {
+        emoji: "🫙",
+        question: "What is 'chimichurri'?",
+        hint: "The green sauce served with almost all grilled meats",
+        choices: [
+          "A spicy red pepper and tomato salsa",
+          "A creamy avocado and lime dip",
+          "A herb sauce made with parsley, garlic, olive oil and vinegar",
+          "A fermented soybean and chili condiment"
+        ],
+        answer: "A herb sauce made with parsley, garlic, olive oil and vinegar",
+        fact: "Chimichurri is Argentina's most famous condiment. There are two versions: 'chimichurri verde' (green) and 'chimichurri rojo' (red, with added peppers). It's drizzled over asado and choripán."
+      }
+    ];
+
+    let questions = [];
+    let currentIndex = 0;
+    let score = 0;
+    let answered = false;
+
+    function shuffle(arr) {
+      return [...arr].sort(() => Math.random() - 0.5);
+    }
+
+    function startGame() {
+      questions = shuffle(allQuestions).slice(0, 10);
+      currentIndex = 0;
+      score = 0;
+      answered = false;
+      document.getElementById('question-screen').style.display = 'block';
+      document.getElementById('results-screen').style.display = 'none';
+      loadQuestion();
+    }
+
+    function loadQuestion() {
+      const q = questions[currentIndex];
+      answered = false;
+
+      document.getElementById('question-num').textContent = `Question ${currentIndex + 1}`;
+      document.getElementById('q-counter').textContent = `Question ${currentIndex + 1} of ${questions.length}`;
+      document.getElementById('score-display').textContent = `Score: ${score}`;
+      document.getElementById('food-emoji').textContent = q.emoji;
+      document.getElementById('question-text').textContent = q.question;
+      document.getElementById('hint-text').textContent = `💡 Hint: ${q.hint}`;
+      document.getElementById('feedback').textContent = '';
+      document.getElementById('feedback').className = '';
+      document.getElementById('fact-box').style.display = 'none';
+      document.getElementById('next-btn').style.display = 'none';
+
+      const pct = (currentIndex / questions.length) * 100;
+      document.getElementById('progress-bar-fill').style.width = pct + '%';
+
+      const choicesDiv = document.getElementById('choices');
+      choicesDiv.innerHTML = '';
+      const shuffledChoices = shuffle(q.choices);
+
+      shuffledChoices.forEach(choice => {
+        const btn = document.createElement('button');
+        btn.className = 'choice-btn';
+        btn.textContent = choice;
+        btn.onclick = () => selectAnswer(choice, q.answer, q.fact);
+        choicesDiv.appendChild(btn);
+      });
+    }
+
+    function selectAnswer(selected, correct, fact) {
+      if (answered) return;
+      answered = true;
+
+      const buttons = document.querySelectorAll('.choice-btn');
+      const feedback = document.getElementById('feedback');
+      const factBox = document.getElementById('fact-box');
+
+      buttons.forEach(btn => {
+        btn.disabled = true;
+        if (btn.textContent === correct) btn.classList.add('correct');
+        else if (btn.textContent === selected && selected !== correct) btn.classList.add('wrong');
+      });
+
+      if (selected === correct) {
+        score++;
+        feedback.textContent = '✅ Correct! Nice work!';
+        feedback.className = 'correct-msg';
+        document.getElementById('score-display').textContent = `Score: ${score}`;
+      } else {
+        feedback.textContent = `❌ Not quite! The answer was: ${correct}`;
+        feedback.className = 'wrong-msg';
+      }
+
+      factBox.textContent = `🇦🇷 Fun fact: ${fact}`;
+      factBox.style.display = 'block';
+
+      const nextBtn = document.getElementById('next-btn');
+      nextBtn.style.display = 'block';
+      if (currentIndex === questions.length - 1) {
+        nextBtn.textContent = 'See Results →';
+      } else {
+        nextBtn.textContent = 'Next Question →';
+      }
+    }
+
+    function nextQuestion() {
+      currentIndex++;
+      if (currentIndex >= questions.length) {
+        showResults();
+      } else {
+        loadQuestion();
+      }
+    }
+
+    function showResults() {
+      document.getElementById('question-screen').style.display = 'none';
+      document.getElementById('results-screen').style.display = 'block';
+
+      const pct = score / questions.length;
+      let emoji, message;
+
+      if (pct === 1) {
+        emoji = '🏆🇦🇷';
+        message = 'Perfect score! You clearly love Argentina as much as I do. Messi would be proud.';
+      } else if (pct >= 0.8) {
+        emoji = '⭐🧉';
+        message = 'Really impressive! You know your Argentine food. Have you been to Argentina?';
+      } else if (pct >= 0.6) {
+        emoji = '🥩👍';
+        message = 'Not bad! You know some of the basics. Maybe try some alfajores and study up!';
+      } else if (pct >= 0.4) {
+        emoji = '🥐😅';
+        message = 'Could be better! Argentina has amazing food culture — time to do some research (and eating).';
+      } else {
+        emoji = '😬🍽️';
+        message = 'Looks like you need a trip to Argentina! Don\'t worry, I didn\'t know any of this before I went either.';
+      }
+
+      document.getElementById('result-emoji').textContent = emoji;
+      document.getElementById('result-score').textContent = `${score} / ${questions.length}`;
+      document.getElementById('result-message').textContent = message;
+
+      document.getElementById('progress-bar-fill').style.width = '100%';
+    }
+
+    function restartGame() {
+      startGame();
+    }
+
+    // kick it off
+    startGame();
+  </script>
+
+</body>
+</html>

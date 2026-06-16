@@ -1,0 +1,754 @@
+Here's all the code in one block you can copy:Here's the full code — paste it into any `.html` file and open it in a browser:
+
+```html
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Matthew Duke — Finance & Investment</title>
+<link href="https://fonts.googleapis.com/css2?family=Cormorant+Garant:ital,wght@0,400;0,600;0,700;1,400&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet">
+<style>
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+  :root {
+    --navy: #0D1B3E;
+    --navy-mid: #162447;
+    --navy-light: #1E3160;
+    --gold: #C9A84C;
+    --gold-light: #E0C57A;
+    --cream: #F8F6F1;
+    --slate: #F0F4FA;
+    --text-dark: #0D1B3E;
+    --text-mid: #4A5568;
+    --text-light: #718096;
+    --white: #FFFFFF;
+  }
+
+  html { scroll-behavior: smooth; }
+
+  body {
+    font-family: 'Inter', sans-serif;
+    background: var(--white);
+    color: var(--text-dark);
+    line-height: 1.6;
+    font-size: 16px;
+  }
+
+  nav {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 100;
+    background: rgba(13, 27, 62, 0.97);
+    backdrop-filter: blur(8px);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 0 5%;
+    height: 62px;
+  }
+  .nav-logo {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: var(--gold);
+    letter-spacing: 0.04em;
+    text-decoration: none;
+  }
+  .nav-links {
+    display: flex;
+    gap: 2rem;
+    list-style: none;
+  }
+  .nav-links a {
+    color: rgba(255,255,255,0.75);
+    text-decoration: none;
+    font-size: 0.8rem;
+    font-weight: 500;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    transition: color 0.2s;
+  }
+  .nav-links a:hover { color: var(--gold-light); }
+
+  .hero {
+    min-height: 100vh;
+    background: var(--navy);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 100px 5% 80px;
+    position: relative;
+    overflow: hidden;
+  }
+  .hero::before {
+    content: '';
+    position: absolute;
+    top: -120px; right: -80px;
+    width: 520px; height: 520px;
+    border: 1px solid rgba(201,168,76,0.12);
+    border-radius: 50%;
+  }
+  .hero::after {
+    content: '';
+    position: absolute;
+    top: -40px; right: 20px;
+    width: 320px; height: 320px;
+    border: 1px solid rgba(201,168,76,0.08);
+    border-radius: 50%;
+  }
+  .hero-eyebrow {
+    font-size: 0.72rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 1.2rem;
+  }
+  .hero h1 {
+    font-family: 'Cormorant Garant', serif;
+    font-size: clamp(3rem, 7vw, 5.5rem);
+    font-weight: 700;
+    color: var(--white);
+    line-height: 1.05;
+    margin-bottom: 1.5rem;
+    max-width: 760px;
+  }
+  .hero h1 em {
+    font-style: italic;
+    color: var(--gold-light);
+  }
+  .hero-sub {
+    font-size: 1.05rem;
+    color: rgba(255,255,255,0.62);
+    max-width: 520px;
+    line-height: 1.7;
+    margin-bottom: 2.5rem;
+    font-weight: 300;
+  }
+  .hero-ctas {
+    display: flex;
+    gap: 1rem;
+    flex-wrap: wrap;
+    align-items: center;
+  }
+  .btn-primary {
+    background: var(--gold);
+    color: var(--navy);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 600;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    border: none;
+    cursor: pointer;
+    text-decoration: none;
+    transition: background 0.2s, transform 0.15s;
+    display: inline-block;
+  }
+  .btn-primary:hover { background: var(--gold-light); transform: translateY(-1px); }
+  .btn-outline {
+    background: transparent;
+    color: rgba(255,255,255,0.8);
+    font-family: 'Inter', sans-serif;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    padding: 0.85rem 2rem;
+    border: 1px solid rgba(255,255,255,0.25);
+    cursor: pointer;
+    text-decoration: none;
+    transition: border-color 0.2s, color 0.2s;
+    display: inline-block;
+  }
+  .btn-outline:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  .hero-stats {
+    display: flex;
+    gap: 3rem;
+    margin-top: 4rem;
+    padding-top: 2rem;
+    border-top: 1px solid rgba(255,255,255,0.1);
+  }
+  .stat-num {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 2.2rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .stat-label {
+    font-size: 0.72rem;
+    letter-spacing: 0.12em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.45);
+    margin-top: 0.3rem;
+    display: block;
+  }
+
+  section { padding: 90px 5%; }
+  .section-eyebrow {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.2em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .section-title {
+    font-family: 'Cormorant Garant', serif;
+    font-size: clamp(2rem, 4vw, 2.8rem);
+    font-weight: 700;
+    color: var(--navy);
+    line-height: 1.15;
+    margin-bottom: 3rem;
+  }
+  .divider {
+    width: 40px;
+    height: 2px;
+    background: var(--gold);
+    margin: 1rem 0 2.5rem;
+  }
+
+  .focus { background: var(--cream); }
+  .focus-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 1.5px;
+    background: rgba(13,27,62,0.08);
+    border: 1.5px solid rgba(13,27,62,0.08);
+  }
+  .focus-card {
+    background: var(--white);
+    padding: 2rem 1.75rem;
+    transition: background 0.2s;
+  }
+  .focus-card:hover { background: var(--navy); }
+  .focus-card:hover .focus-icon { color: var(--gold); }
+  .focus-card:hover .focus-name { color: var(--white); }
+  .focus-card:hover .focus-desc { color: rgba(255,255,255,0.6); }
+  .focus-icon {
+    font-size: 1.6rem;
+    color: var(--navy);
+    margin-bottom: 1rem;
+    display: block;
+    transition: color 0.2s;
+  }
+  .focus-name {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.25rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.5rem;
+    transition: color 0.2s;
+  }
+  .focus-desc {
+    font-size: 0.85rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    transition: color 0.2s;
+  }
+
+  .experience { background: var(--white); }
+  .timeline { position: relative; }
+  .timeline::before {
+    content: '';
+    position: absolute;
+    left: 0; top: 6px; bottom: 0;
+    width: 2px;
+    background: linear-gradient(to bottom, var(--gold), rgba(201,168,76,0.1));
+  }
+  .timeline-item {
+    padding-left: 2.5rem;
+    margin-bottom: 3.5rem;
+    position: relative;
+  }
+  .timeline-item::before {
+    content: '';
+    position: absolute;
+    left: -5px; top: 6px;
+    width: 12px; height: 12px;
+    background: var(--gold);
+    border-radius: 50%;
+  }
+  .timeline-meta {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+    margin-bottom: 0.4rem;
+    flex-wrap: wrap;
+  }
+  .timeline-company {
+    font-size: 0.7rem;
+    font-weight: 600;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: var(--gold);
+  }
+  .timeline-period {
+    font-size: 0.72rem;
+    color: var(--text-light);
+    letter-spacing: 0.06em;
+  }
+  .timeline-role {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.45rem;
+    font-weight: 700;
+    color: var(--navy);
+    margin-bottom: 0.8rem;
+    line-height: 1.2;
+  }
+  .timeline-location {
+    font-size: 0.78rem;
+    color: var(--text-light);
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
+    gap: 0.3rem;
+  }
+  .timeline-bullets {
+    list-style: none;
+    display: flex;
+    flex-direction: column;
+    gap: 0.55rem;
+  }
+  .timeline-bullets li {
+    font-size: 0.9rem;
+    color: var(--text-mid);
+    line-height: 1.6;
+    padding-left: 1rem;
+    position: relative;
+  }
+  .timeline-bullets li::before {
+    content: '—';
+    position: absolute;
+    left: 0;
+    color: var(--gold);
+    font-weight: 700;
+  }
+  .highlight-stat {
+    display: inline-block;
+    background: var(--navy);
+    color: var(--gold-light);
+    font-size: 0.78rem;
+    font-weight: 600;
+    padding: 0.18rem 0.6rem;
+    margin-left: 0.3rem;
+  }
+
+  .education { background: var(--navy); }
+  .education .section-title { color: var(--white); }
+  .edu-card {
+    background: var(--navy-mid);
+    border: 1px solid rgba(201,168,76,0.2);
+    padding: 2.5rem;
+    display: grid;
+    grid-template-columns: 1fr auto;
+    gap: 2rem;
+    align-items: start;
+  }
+  .edu-school {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--white);
+    margin-bottom: 0.3rem;
+  }
+  .edu-degree {
+    font-size: 0.82rem;
+    color: rgba(255,255,255,0.55);
+    letter-spacing: 0.1em;
+    text-transform: uppercase;
+    margin-bottom: 1.5rem;
+  }
+  .edu-tags {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.5rem;
+  }
+  .tag {
+    font-size: 0.72rem;
+    letter-spacing: 0.08em;
+    padding: 0.3rem 0.75rem;
+    border: 1px solid rgba(201,168,76,0.3);
+    color: rgba(255,255,255,0.65);
+  }
+  .edu-gpa-box {
+    text-align: center;
+    border-left: 1px solid rgba(201,168,76,0.2);
+    padding-left: 2rem;
+  }
+  .edu-gpa-num {
+    font-family: 'Cormorant Garant', serif;
+    font-size: 3rem;
+    font-weight: 700;
+    color: var(--gold);
+    line-height: 1;
+    display: block;
+  }
+  .edu-gpa-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.14em;
+    text-transform: uppercase;
+    color: rgba(255,255,255,0.4);
+    margin-top: 0.3rem;
+    display: block;
+  }
+  .edu-activities {
+    margin-top: 1.5rem;
+    padding-top: 1.5rem;
+    border-top: 1px solid rgba(255,255,255,0.08);
+  }
+  .edu-activities-label {
+    font-size: 0.68rem;
+    letter-spacing: 0.16em;
+    text-transform: uppercase;
+    color: var(--gold);
+    margin-bottom: 0.6rem;
+  }
+  .edu-activity-list {
+    font-size: 0.85rem;
+    color: rgba(255,255,255,0.6);
+    line-height: 1.7;
+  }
+
+  .about { background: var(--slate); }
+  .about-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 4rem;
+    align-items: start;
+  }
+  .skills-list {
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+  }
+  .skill-row {
+    display: flex;
+    align-items: center;
+    gap: 1rem;
+  }
+  .skill-label {
+    font-size: 0.8rem;
+    font-weight: 500;
+    color: var(--text-dark);
+    width: 150px;
+    flex-shrink: 0;
+  }
+  .skill-bar-bg {
+    flex: 1;
+    height: 3px;
+    background: rgba(13,27,62,0.12);
+  }
+  .skill-bar-fill {
+    height: 100%;
+    background: var(--gold);
+  }
+  .about-text p {
+    font-size: 0.95rem;
+    color: var(--text-mid);
+    line-height: 1.8;
+    margin-bottom: 1.2rem;
+  }
+  .about-text p:last-child { margin-bottom: 0; }
+  .about-highlight {
+    background: var(--navy);
+    color: var(--gold-light);
+    font-weight: 600;
+    padding: 0.1rem 0.4rem;
+  }
+
+  .contact {
+    background: var(--navy);
+    text-align: center;
+  }
+  .contact .section-title { color: var(--white); }
+  .contact-sub {
+    font-size: 1rem;
+    color: rgba(255,255,255,0.55);
+    max-width: 440px;
+    margin: 0 auto 2.5rem;
+    line-height: 1.7;
+  }
+  .contact-links {
+    display: flex;
+    justify-content: center;
+    gap: 1.5rem;
+    flex-wrap: wrap;
+  }
+  .contact-link {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.82rem;
+    font-weight: 500;
+    letter-spacing: 0.08em;
+    color: rgba(255,255,255,0.7);
+    text-decoration: none;
+    border: 1px solid rgba(255,255,255,0.18);
+    padding: 0.75rem 1.5rem;
+    transition: border-color 0.2s, color 0.2s;
+  }
+  .contact-link:hover { border-color: var(--gold); color: var(--gold-light); }
+
+  footer {
+    background: #080f22;
+    padding: 1.5rem 5%;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
+  footer span {
+    font-size: 0.75rem;
+    color: rgba(255,255,255,0.3);
+    letter-spacing: 0.06em;
+  }
+
+  @media (max-width: 700px) {
+    .hero-stats { gap: 1.5rem; flex-wrap: wrap; }
+    .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+    .edu-card { grid-template-columns: 1fr; }
+    .edu-gpa-box { border-left: none; border-top: 1px solid rgba(201,168,76,0.2); padding-left: 0; padding-top: 1.5rem; }
+    .nav-links { display: none; }
+    footer { flex-direction: column; gap: 0.5rem; text-align: center; }
+  }
+</style>
+</head>
+<body>
+
+<nav>
+  <a href="#" class="nav-logo">Matthew Duke</a>
+  <ul class="nav-links">
+    <li><a href="#focus">Focus</a></li>
+    <li><a href="#experience">Experience</a></li>
+    <li><a href="#education">Education</a></li>
+    <li><a href="#contact">Contact</a></li>
+  </ul>
+</nav>
+
+<section class="hero" id="top">
+  <p class="hero-eyebrow">Finance &amp; Investment — BYU · Castle Rock, CO</p>
+  <h1>Matthew Duke<br><em>Analyst. Investor.<br>Builder.</em></h1>
+  <p class="hero-sub">Pre-business student at Brigham Young University with hands-on experience in growth-stage investment, capital markets, and strategic analysis — driven by a deep interest in finance and accounting.</p>
+  <div class="hero-ctas">
+    <a href="#contact" class="btn-primary">Get in Touch</a>
+    <a href="https://www.linkedin.com/in/matthew-duke-a009a3389/" target="_blank" class="btn-outline">LinkedIn ↗</a>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-item">
+      <span class="stat-num">3.91</span>
+      <span class="stat-label">GPA</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">200+</span>
+      <span class="stat-label">Candidates Managed</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">21%</span>
+      <span class="stat-label">Revenue Growth Driven</span>
+    </div>
+    <div class="stat-item">
+      <span class="stat-num">4:49</span>
+      <span class="stat-label">Mile — Competitive Runner</span>
+    </div>
+  </div>
+</section>
+
+<section class="focus" id="focus">
+  <p class="section-eyebrow">Areas of Interest</p>
+  <h2 class="section-title">Where I Focus My Energy</h2>
+  <div class="focus-grid">
+    <div class="focus-card">
+      <span class="focus-icon">📈</span>
+      <div class="focus-name">Investment Banking</div>
+      <div class="focus-desc">Fascinated by capital markets, deal structuring, and how companies raise and deploy capital to create value at scale.</div>
+    </div>
+    <div class="focus-card">
+      <span class="focus-icon">💼</span>
+      <div class="focus-name">Private Equity</div>
+      <div class="focus-desc">Active member of BYU's PE & VC Club with direct exposure to growth-stage investment analysis and sourcing at Concordia Capital.</div>
+    </div>
+    <div class="focus-card">
+      <span class="focus-icon">🏦</span>
+      <div class="focus-name">Corporate Finance</div>
+      <div class="focus-desc">Grounded in financial accounting and the principles that drive business decisions — from unit economics to strategic allocation.</div>
+    </div>
+    <div class="focus-card">
+      <span class="focus-icon">📊</span>
+      <div class="focus-name">Financial Analysis</div>
+      <div class="focus-desc">Comfortable synthesizing market research, competitive analysis, and financial data into actionable investment theses and pitch decks.</div>
+    </div>
+  </div>
+</section>
+
+<section class="experience" id="experience">
+  <p class="section-eyebrow">Professional History</p>
+  <h2 class="section-title">Experience</h2>
+  <div class="divider"></div>
+  <div class="timeline">
+
+    <div class="timeline-item">
+      <div class="timeline-meta">
+        <span class="timeline-company">Concordia Capital</span>
+        <span class="timeline-period">Jan 2026 – Present</span>
+      </div>
+      <div class="timeline-role">Analyst</div>
+      <div class="timeline-location">📍 New York, NY · Growth Stage Investment &amp; Advisory</div>
+      <ul class="timeline-bullets">
+        <li>Managed end-to-end recruitment pipeline for <span class="highlight-stat">200+ candidates</span>, conducting structured interviews and coordinating evaluation across teams.</li>
+        <li>Developed compelling pitch decks communicating complex investment theses and firm strategy to prospective clients, partners, and key stakeholders.</li>
+        <li>Led proactive sourcing initiatives to identify and qualify high-potential opportunities, driving deal flow and pipeline development for the firm.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-meta">
+        <span class="timeline-company">Lifey</span>
+        <span class="timeline-period">Jan – Apr 2026</span>
+      </div>
+      <div class="timeline-role">Sponsor Liaison</div>
+      <div class="timeline-location">📍 Provo, UT · On-Campus Internship</div>
+      <ul class="timeline-bullets">
+        <li>Served as primary liaison between leadership and external sponsors, facilitating focus groups and conducting user research to shape product decisions.</li>
+        <li>Proposed and contributed to <span class="highlight-stat">10+ new app features</span>, designing detailed UI mockups, app icons, and marketing materials including billboards.</li>
+        <li>Expanded platform content through independent research, broadening reach across a wider range of user interests.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-meta">
+        <span class="timeline-company">University Growth Fund Case Competition</span>
+        <span class="timeline-period">Oct – Nov 2025</span>
+      </div>
+      <div class="timeline-role">Participant</div>
+      <div class="timeline-location">📍 Provo, UT</div>
+      <ul class="timeline-bullets">
+        <li>Collaborated with a cross-functional team of 4 to evaluate early-stage ventures, conducting in-depth market research and competitive analysis over 4 weeks.</li>
+        <li>Delivered a data-driven investment pitch synthesizing research findings into a venture funding recommendation.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-meta">
+        <span class="timeline-company">PMT — Plastic Molding Technology</span>
+        <span class="timeline-period">Jun – Aug 2025</span>
+      </div>
+      <div class="timeline-role">Quality Control Intern</div>
+      <div class="timeline-location">📍 Denver, CO · PE-Backed Precision Manufacturing</div>
+      <ul class="timeline-bullets">
+        <li>Performed rigorous QC inspections of high-precision injection molded plastic parts for Automotive, Aerospace, and Life Sciences clients.</li>
+        <li>Identified root causes of quality inefficiencies and implemented process improvements that directly enabled <span class="highlight-stat">21% revenue growth</span> in a market growing at only 2%.</li>
+      </ul>
+    </div>
+
+    <div class="timeline-item">
+      <div class="timeline-meta">
+        <span class="timeline-company">The Church of Jesus Christ of Latter-day Saints</span>
+        <span class="timeline-period">Jul 2023 – Jun 2025</span>
+      </div>
+      <div class="timeline-role">Spanish-Speaking Volunteer Representative</div>
+      <div class="timeline-location">📍 Rosario, Argentina</div>
+      <ul class="timeline-bullets">
+        <li>Supervised, motivated, and trained groups of <span class="highlight-stat">25–30 people</span> in a leadership capacity across Argentina.</li>
+        <li>Developed strong cross-cultural communication skills and professional fluency in Spanish.</li>
+      </ul>
+    </div>
+
+  </div>
+</section>
+
+<section class="education" id="education">
+  <p class="section-eyebrow" style="color: var(--gold);">Academic Background</p>
+  <h2 class="section-title">Education</h2>
+  <div class="edu-card">
+    <div>
+      <div class="edu-school">Brigham Young University</div>
+      <div class="edu-degree">Pre-Business · Expected Graduation Apr 2029 · Provo, UT</div>
+      <div class="edu-tags">
+        <span class="tag">Principles of Finance</span>
+        <span class="tag">Accounting</span>
+        <span class="tag">Economics</span>
+        <span class="tag">Statistical Data Analysis</span>
+        <span class="tag">Business Analysis</span>
+        <span class="tag">BYU Scholarship Recipient</span>
+      </div>
+      <div class="edu-activities">
+        <div class="edu-activities-label">Organizations</div>
+        <div class="edu-activity-list">
+          BYU Finance Society &nbsp;·&nbsp; Investment Banking Association &nbsp;·&nbsp; Private Equity &amp; Venture Capital Club
+        </div>
+      </div>
+    </div>
+    <div class="edu-gpa-box">
+      <span class="edu-gpa-num">3.91</span>
+      <span class="edu-gpa-label">GPA / 4.00</span>
+    </div>
+  </div>
+</section>
+
+<section class="about" id="about">
+  <p class="section-eyebrow">Background &amp; Skills</p>
+  <h2 class="section-title">About Me</h2>
+  <div class="about-grid">
+    <div class="about-text">
+      <p>I'm a finance-focused pre-business student at BYU with a genuine passion for how capital markets work — from the mechanics of a deal to the accounting fundamentals that underpin every investment decision. I find the intersection of <span class="about-highlight">quantitative rigor and strategic storytelling</span> especially compelling.</p>
+      <p>My experience spans growth-stage investment at Concordia Capital, operational improvement at a PE-backed manufacturer, and competitive case analysis — giving me a rounded view of how businesses are built, valued, and grown.</p>
+      <p>Outside of finance, I'm a competitive runner (<span class="about-highlight">4:49 mile</span>) and fluent Spanish speaker, shaped by two years of leadership and service in Argentina.</p>
+    </div>
+    <div>
+      <div class="skills-list">
+        <div style="font-size: 0.72rem; letter-spacing: 0.14em; text-transform: uppercase; color: var(--text-light); margin-bottom: 1.2rem;">Core Competencies</div>
+        <div class="skill-row">
+          <span class="skill-label">Financial Analysis</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:88%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-label">Investment Research</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:85%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-label">Pitch Deck Development</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:90%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-label">Market Research</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:82%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-label">Data Analysis</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:78%"></div></div>
+        </div>
+        <div class="skill-row">
+          <span class="skill-label">Spanish (Fluent)</span>
+          <div class="skill-bar-bg"><div class="skill-bar-fill" style="width:95%"></div></div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="contact" id="contact">
+  <p class="section-eyebrow" style="color: var(--gold);">Let's Connect</p>
+  <h2 class="section-title">Open to Opportunities</h2>
+  <p class="contact-sub">I'm actively seeking internships and analyst roles in investment banking, private equity, and corporate finance. Let's talk.</p>
+  <div class="contact-links">
+    <a href="mailto:matt000@byu.edu" class="contact-link">✉ matt000@byu.edu</a>
+    <a href="tel:6074389004" class="contact-link">📞 (607) 438-9004</a>
+    <a href="https://www.linkedin.com/in/matthew-duke-a009a3389/" target="_blank" class="contact-link">LinkedIn ↗</a>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Matthew Duke</span>
+  <span>Castle Rock, CO · Provo, UT</span>
+</footer>
+
+</body>
+</html>
+```
+
+Save that as `index.html`, open it in any browser, and you're good to go. To host it for free, drop it into [GitHub Pages](https://pages.github.com) or [Netlify Drop](https://app.netlify.com/drop) — both take under 2 minutes.
